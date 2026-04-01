@@ -1,0 +1,14 @@
+node_modules/
+.env
+logs/
+*.log
+dist/
+build/
+uploads/
+coverage/
+.DS_Store
+.vscode/
+.idea/
+*.sql
+*.pem
+*.key
