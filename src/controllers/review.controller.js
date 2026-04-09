@@ -238,6 +238,33 @@ const getReviewCountByType = async (req, res) => {
     }
 };
 
+/**
+ * Restore Review
+ */
+const restoreReview = async (req, res) => {
+    try {
+        const affected = await reviewService.restoreReview(req.params.id);
+
+        if (!affected) {
+            return res.status(404).json({
+                success: false,
+                message: "Review not found or already active"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Review restored successfully"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     createReview,
     getReviews,
@@ -246,5 +273,6 @@ module.exports = {
     updateReview,
     deleteReview,
     searchReviews,
-    getReviewCountByType
+    getReviewCountByType,
+    restoreReview
 };

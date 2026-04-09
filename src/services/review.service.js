@@ -274,6 +274,35 @@ const getReviewCountByType = async (entity_type) => {
     }
 };
 
+/**
+ * Restore Review (Undo Soft Delete)
+ */
+const restoreReview = async (id) => {
+    const db = getDB();
+
+    // Get entity info before restore (for summary update)
+    const [[existing]] = await db.execute(
+        `SELECT entity_id, entity_type FROM reviews WHERE id = ?`,
+        [id]
+    );
+
+    const [result] = await db.execute(
+        `UPDATE reviews 
+         SET deleted_at = NULL, deleted_by = NULL
+         WHERE id = ? AND deleted_at IS NOT NULL`,
+        [id]
+    );
+
+    if (result.affectedRows && existing) {
+        await reviewSummaryService.updateReviewSummary(
+            existing.entity_id,
+            existing.entity_type
+        );
+    }
+
+    return result.affectedRows;
+};
+
 module.exports = {
     createReview,
     getReviews,
@@ -282,5 +311,6 @@ module.exports = {
     updateReview,
     deleteReview,
     searchReviews,
-    getReviewCountByType
+    getReviewCountByType,
+    restoreReview
 };

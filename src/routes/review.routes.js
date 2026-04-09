@@ -30,4 +30,6 @@ router.put('/:id', reviewController.updateReview);
 // ✅ Delete
 router.delete('/:id', reviewController.deleteReview);
 
+router.put('/:id/restore', reviewController.restoreReview);
+
 module.exports = router;

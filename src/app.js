@@ -22,6 +22,7 @@ const reviewFlagsRoutes = require('./routes/reviewFlags.routes');
 const reviewSettingsRoutes = require('./routes/reviewSettings.routes');
 
 
+
 const app = express();
 
 app.use(cors());
